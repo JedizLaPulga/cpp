@@ -7,14 +7,35 @@
 #include <stddef.h>
 #include <stdint.h>
 
-extern void parseAndDisplay(const char* jsonStr);
+struct JSONValue;
+struct Json;
 
-extern const char* getValueByPath(const char* jsonStr, const char* keyPath);
+// Forward declare extern(C) helper functions
+extern "C" void jsonInit(Json* obj);
+extern "C" void jsonDestroy(Json* obj);
 
-extern const char* filterByField(const char* jsonStr, const char* fieldName, const char* fieldValue);
-
-extern const char* mapField(const char* jsonStr, const char* fieldName);
-
-extern const char* mergeObjects(const char* json1, const char* json2);
-
-extern int64_t countElements(const char* jsonStr);
+struct Json final
+{
+    JSONValue* data;
+    void parse(const char* jsonStr);
+    const char* stringify();
+    int64_t getLength();
+    
+    // Inline constructor calls extern(C) init helper
+    Json() :
+        data(nullptr)
+    {
+        jsonInit(this);
+    }
+    
+    Json(JSONValue* data) :
+        data(data)
+    {
+    }
+    
+    // Inline destructor calls extern(C) cleanup helper
+    ~Json()
+    {
+        jsonDestroy(this);
+    }
+};

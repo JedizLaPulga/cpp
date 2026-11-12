@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="220" viewBox="0 0 1200 220" role="img" aria-labelledby="title desc">
+  <title id="title">::cpp</title>
+  <desc id="desc">Black and white banner with the text ::cpp</desc>
+  <rect width="1200" height="220" fill="#000000"/>
+  <rect x="20" y="20" width="1160" height="180" fill="none" stroke="#ffffff" stroke-width="4"/>
+  <g fill="#ffffff" font-family="Arial, Helvetica, sans-serif" text-anchor="middle">
+    <text x="600" y="126" font-size="92" font-weight="700" letter-spacing="4">::cpp</text>
+  </g>
+  <g stroke="#ffffff" stroke-width="2" fill="none">
+    <path d="M150 170 H1050" opacity="0.8"/>
+    <path d="M190 66 L250 66" opacity="0.7"/>
+    <path d="M950 66 L1010 66" opacity="0.7"/>
+  </g>
+</svg>

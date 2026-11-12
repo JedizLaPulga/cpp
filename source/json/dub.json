@@ -1,0 +1,11 @@
+{
+  "name": "json",
+  "description": "D Phobos JSON manipulation library with C++ interop - outputs formatted JSON to stdout",
+  "license": "proprietary",
+  "targetType": "sourceLibrary",
+  "targetPath": "dist",
+  "targetName": "json",
+  "sourcePaths": [
+    "source"
+  ]
+}

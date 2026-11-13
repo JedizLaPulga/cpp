@@ -4,6 +4,7 @@ import std.json;
 import std.array : Appender, appender;
 import std.format : format;
 import core.stdc.string;
+import std.string : toStringz;
 
 private void formatValue(JSONValue value, ref Appender!string output)
 {
@@ -65,7 +66,7 @@ struct Json {
     
     void parse(const(char)* jsonStr)
     {
-        if (jsonStr == null) return;
+        if (jsonStr == null || data is null) return;
         try {
             *data = parseJSON(jsonStr[0..strlen(jsonStr)]);
         } catch (Exception e) {
@@ -75,17 +76,19 @@ struct Json {
     
     const(char)* stringify()
     {
+        if (data is null) return toStringz("null");
         try {
             auto output = appender!string;
             formatValue(*data, output);
-            return output.data.dup.ptr;
+            return toStringz(output.data);
         } catch (Exception e) {
-            return "null".ptr;
+            return toStringz("null");
         }
     }
     
     long getLength()
     {
+        if (data is null) return -1;
         if (data.type == JSONType.array) {
             return data.array.length;
         }

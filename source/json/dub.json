@@ -3,7 +3,7 @@
   "description": "D Phobos JSON manipulation library with C++ interop - outputs formatted JSON to stdout",
   "license": "proprietary",
   "targetType": "sourceLibrary",
-  "targetPath": "dist",
+  "targetPath": "build",
   "targetName": "json",
   "sourcePaths": [
     "source"

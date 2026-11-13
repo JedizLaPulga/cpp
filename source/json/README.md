@@ -1,155 +1,52 @@
-# JSON Manipulation Library
+# JSON D/C++ Interop Library
 
-Beautiful Phobos-powered JSON manipulation for Linux users with stdout-piping in mind.
+Small JSON wrapper implemented in D (Phobos) with a C++-friendly API.
 
-## Features
+## Current API
 
-This library uses D's **Phobos** standard library for elegant JSON handling with **beautiful formatted output**. All operations output formatted JSON directly to stdout, perfect for Unix piping workflows.
+The public C++ API is exposed through `JsonHandle` in [`build/include/json.hpp`](build/include/json.hpp):
 
-### Available Functions
+- `void parse(const char* jsonStr)`
+- `const char* stringify()`
+- `int64_t getLength()`
 
-#### `parseAndDisplay(const char* jsonStr)`
-Parse and pretty-print JSON to stdout.
-
-**Example:**
-```c
-parseAndDisplay("{\"name\": \"Alice\", \"age\": 30}");
-```
-**Output:**
-```json
-{
-  "name": "Alice",
-  "age": 30
-}
-```
-
-#### `countElements(const char* jsonStr) -> long`
-Count elements in a JSON array with output.
-
-**Example:**
-```c
-long count = countElements("[1, 2, 3, 4, 5]");
-```
-**Output:**
-```
-Array has 5 elements
-```
-
-#### `getValueByPath(const char* jsonStr, const char* keyPath) -> const char*`
-Extract values using dot-separated key paths.
-
-**Example:**
-```c
-getValueByPath("{\"user\": {\"profile\": {\"name\": \"Bob\"}}}", "user.profile.name");
-```
-**Output:**
-```json
-"Bob"
-```
-
-#### `filterByField(const char* jsonStr, const char* fieldName, const char* fieldValue) -> const char*`
-Filter array of objects by key-value pair with formatted output.
-
-**Example:**
-```c
-const char* data = R"([
-  {"name": "Alice", "role": "admin"},
-  {"name": "Bob", "role": "user"},
-  {"name": "Charlie", "role": "admin"}
-])";
-
-filterByField(data, "role", "admin");
-```
-**Output:**
-```json
-[
-  {
-    "name": "Alice",
-    "role": "admin"
-  },
-  {
-    "name": "Charlie",
-    "role": "admin"
-  }
-]
-```
-
-#### `mapField(const char* jsonStr, const char* fieldName) -> const char*`
-Extract specific field from all array elements with formatted output.
-
-**Example:**
-```c
-mapField(R"([{"id": 1, "name": "Alice"}, {"id": 2, "name": "Bob"}])", "name");
-```
-**Output:**
-```json
-[
-  "Alice",
-  "Bob"
-]
-```
-
-#### `mergeObjects(const char* json1, const char* json2) -> const char*`
-Merge two JSON objects with formatted output.
-
-**Example:**
-```c
-mergeObjects("{\"a\": 1}", "{\"b\": 2}");
-```
-**Output:**
-```json
-{
-  "a": 1,
-  "b": 2
-}
-```
+`JsonHandle` uses RAII in C++ by calling `jsonInit/jsonDestroy` in constructor/destructor.
 
 ## Build
 
-```bash
-cd /home/hp/Documents/github/cpp/source/json
-./build.sh
-```
-
-Generates:
-- `dist/libjson.so` - Shared library for Linux
-- `dist/json.hpp` - C++ header with function declarations
-
-## Philosophy
-
-- **No file I/O** - Output to stdout for Unix piping chains
-- **Beautiful formatting** - Pretty-printed JSON with proper indentation
-- **Phobos power** - Leverages D's excellent standard library
-- **C++ compatible** - Easily integrated into C/C++ projects
-- **Linux-ready** - `.so` shared library for immediate use
-
-## Usage with Piping
+From project root:
 
 ```bash
-# Save parsed JSON to file via piping
-./your_program | my_json_lib parseAndDisplay '{"data": [...]}' > output.json
-
-# Chain multiple operations
-cat input.json | extract_data | my_json_lib filterByField "status" "active" > filtered.json
+./scripts/build.sh
 ```
 
-## Structure
+Artifacts:
+- `build/libjson.so` - shared library
+- `build/generated/json_ffi.hpp` - generated low-level header from ldc2
 
+## Run tests
+
+```bash
+./tests/build_and_run.sh
 ```
+
+## Project structure
+
+``` 
 json/
+├── build/
+│   ├── generated/
+│   │   └── json_ffi.hpp      # Generated low-level FFI header
+│   ├── include/
+│   │   └── json.hpp          # Public C++ API wrapper
+│   └── libjson.so
+├── docs/                     # Architecture and refactoring notes
+├── scripts/
+│   └── build.sh              # Build script (ldc2)
 ├── source/
-│   └── arr.d              # D module with Phobos JSON logic
-├── dist/
-│   ├── libjson.so         # Compiled shared library
-│   ├── libjson.o          # Object file
-│   └── json.hpp           # C++ header
-├── dub.json               # D package configuration
-└── build.sh               # Build script
+│   └── json.d                # D implementation
+├── tests/
+│   ├── build_and_run.sh      # Test build/runner
+│   └── main.cpp              # C++ integration tests
+└── dub.json
 ```
-
-## Phobos Features Used
-
-- `std.json` - Parsing and manipulation
-- `std.array` - String building and appending
-- `std.format` - Formatted output
-- `std.stdio` - Standard output operations

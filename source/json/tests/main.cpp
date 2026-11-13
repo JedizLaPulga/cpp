@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "../dist/json.hpp"
+#include "json.hpp"
 
 using namespace std;
 
@@ -10,18 +10,18 @@ int main() {
     // Test 1: Parse simple object
     {
         cout << "\n[Test 1] Parse JSON Object" << endl;
-        Json jsonObj;
+        JsonHandle jsonObj;
         const char* json1 = R"({"name":"Alice","age":30})";
         cout << "  Input: " << json1 << endl;
-        obj1.parse(json1);
-        cout << "  Output: " << obj1.stringify() << endl;
+        jsonObj.parse(json1);
+        cout << "  Output: " << jsonObj.stringify() << endl;
         cout << "  ✓ PASSED" << endl;
     }
     
     // Test 2: Parse array
     {
         cout << "\n[Test 2] Parse JSON Array" << endl;
-        Json obj2;
+        JsonHandle obj2;
         const char* json2 = R"([1,2,3,4,5])";
         cout << "  Input: " << json2 << endl;
         obj2.parse(json2);
@@ -33,7 +33,7 @@ int main() {
     // Test 3: Parse nested object
     {
         cout << "\n[Test 3] Parse Nested Object" << endl;
-        Json obj3;
+        JsonHandle obj3;
         const char* json3 = R"({"user":{"name":"Bob","age":25}})";
         cout << "  Input: " << json3 << endl;
         obj3.parse(json3);
@@ -45,7 +45,7 @@ int main() {
     {
         cout << "\n[Test 4] Multiple Object Lifecycle" << endl;
         {
-            Json temp;
+            JsonHandle temp;
             temp.parse(R"({"test":"value"})");
             cout << "  Temp object: " << temp.stringify() << endl;
         }  // dtor calls jsonDestroy here
@@ -56,4 +56,3 @@ int main() {
     
     return 0;
 }
-

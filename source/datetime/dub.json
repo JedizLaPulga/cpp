@@ -1,0 +1,11 @@
+{
+  "name": "datetime",
+  "description": "Minimal D/C++ datetime interop module",
+  "license": "proprietary",
+  "targetType": "sourceLibrary",
+  "targetPath": "build",
+  "targetName": "datetime",
+  "sourcePaths": [
+    "source"
+  ]
+}
